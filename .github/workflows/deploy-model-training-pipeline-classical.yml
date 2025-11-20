@@ -50,7 +50,7 @@ jobs:
     uses: ccarballolozano/mlops-templates/.github/workflows/create-compute.yml@develop
     with:
       cluster_name: cpu-cluster
-      size: Standard_DS3_v2
+      size: Standard_D4s_v3
       min_instances: 0
       max_instances: 4
       cluster_tier: low_priority
