@@ -35,11 +35,7 @@ jobs:
       endpoint_name: ${{ format('taxi-gha-{0}', needs.get-config.outputs.oep) }}
       endpoint_type: online
     secrets:
-#      creds: ${{secrets.AZURE_CREDENTIALS}}
-      AZURE_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      AZURE_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      creds: ${{secrets.AZURE_CREDENTIALS}}
   create-deployment:
     uses: ccarballolozano/mlops-templates/.github/workflows/create-deployment.yml@develop
     needs: [get-config, create-endpoint]
@@ -51,11 +47,7 @@ jobs:
       endpoint_type: online
       deployment_name: taxi-online-dp
     secrets:
-#      creds: ${{secrets.AZURE_CREDENTIALS}}
-      AZURE_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      AZURE_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      creds: ${{secrets.AZURE_CREDENTIALS}}
   allocate-traffic:
     uses: ccarballolozano/mlops-templates/.github/workflows/allocate-traffic.yml@develop
     needs: [get-config, create-deployment]
@@ -65,8 +57,5 @@ jobs:
       traffic_allocation: taxi-online-dp=100
       endpoint_name: ${{ format('taxi-gha-{0}', needs.get-config.outputs.oep) }}
     secrets:
-#      creds: ${{secrets.AZURE_CREDENTIALS}}
-      AZURE_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      AZURE_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      creds: ${{secrets.AZURE_CREDENTIALS}}
+
