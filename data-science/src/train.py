@@ -16,6 +16,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 
 import mlflow
+from mlflow.models import infer_signature
 import mlflow.sklearn
 
 TARGET_COL = "cost"
@@ -130,7 +131,12 @@ def main(args):
     mlflow.log_artifact("regression_results.png")
 
     # Save the model
-    mlflow.sklearn.save_model(sk_model=model, path=args.model_output, input_example=X_train.iloc[0:2])
+    signature = infer_signature(X_train, model.predict(X_train))
+    mlflow.sklearn.save_model(
+        sk_model=model, 
+        path=args.model_output, 
+        signature=signature,
+        input_example=X_train.iloc[0:2])
 
 
 if __name__ == "__main__":
