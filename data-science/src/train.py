@@ -130,7 +130,7 @@ def main(args):
     mlflow.log_artifact("regression_results.png")
 
     # Save the model
-    mlflow.sklearn.save_model(sk_model=model, path=args.model_output)
+    mlflow.sklearn.save_model(sk_model=model, path=args.model_output, input_example=X_train.iloc[0:2])
 
 
 if __name__ == "__main__":
