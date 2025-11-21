@@ -43,8 +43,23 @@ def main(args):
         # load model
         model =  mlflow.sklearn.load_model(args.model_path) 
 
-        # log model using mlflow
-        mlflow.sklearn.log_model(model, args.model_name)
+        try:
+            # log model using mlflow with input example
+            from mlflow.models import Model
+            import pandas as pd
+            model_meta = Model.load(args.model_path)
+            example_info = model_meta.saved_input_example_info
+            artifact_rel_path = example_info["artifact_path"]
+            artifact_abs_path = os.path.join(args.model_path, artifact_rel_path)
+
+            # The example is a Pandas DataFrame stored as JSON
+            with open(artifact_abs_path) as f:
+                input_example = pd.read_json(f, orient=example_info["pandas_orient"])
+            mlflow.sklearn.log_model(model, args.model_name, input_example=input_example)
+        except Exception as e:
+            # log model using mlflow without input example
+            print("Could not log input example: ", str(e))
+            mlflow.sklearn.log_model(model, args.model_name)
 
         # register logged model using mlflow
         run_id = mlflow.active_run().info.run_id
